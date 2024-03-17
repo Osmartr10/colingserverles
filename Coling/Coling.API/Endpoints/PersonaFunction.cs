@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -22,6 +25,8 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarPersonas")]
+        [OpenApiOperation(operationId: "Run", Summary = "GetTags", Description = "Says welcome to Azure Functions")]
+        [OpenApiSecurity("Authorization", SecuritySchemeType.ApiKey, Name = "Basic", In = OpenApiSecurityLocationType.Header)]
         public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarpersonas")] HttpRequestData req)
         {            
             _logger.LogInformation("Ejecutando azure function para isnertar personas.");            
