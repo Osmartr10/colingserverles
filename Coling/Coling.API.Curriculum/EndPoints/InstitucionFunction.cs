@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
@@ -49,6 +50,10 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("ListarInstitucion")]
+        [OpenApiOperation("Listarspec", "ListarInstitucion", Description ="Sirve para listar todas las instituciones") ]
+        [OpenApiResponseWithBody(statusCode:HttpStatusCode.OK, contentType:"application/json", 
+            bodyType: typeof(List<Institucion>),
+            Description ="Mostrara una lista de instituciones")]
         public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -63,6 +68,35 @@ namespace Coling.API.Curriculum.EndPoints
             {
                 respuesta = req.CreateResponse(HttpStatusCode.InternalServerError);
                 return respuesta;
+            }
+        }
+
+        [Function("ListaNombres")]
+        [OpenApiOperation("Listarspec", "ListaNombres", Description = "Sirve para listar todas las instituciones")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+            bodyType: typeof(List<string>),
+            Description = "Mostrara una lista de instituciones")]
+        public async Task<HttpResponseData> ListaNombres([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        {
+            HttpResponseData respuesta;
+            try
+            {
+                List<string> cadenas = new List<string>();
+                cadenas.Add("UPDS");
+                cadenas.Add("UAJMS");
+                cadenas.Add("UNO");
+                respuesta = req.CreateResponse(HttpStatusCode.OK);
+                await respuesta.WriteAsJsonAsync(cadenas);
+
+                return respuesta;
+                //return new OkObjectResult(cadenas);
+            }
+            catch (Exception)
+            {
+                respuesta = req.CreateResponse(HttpStatusCode.InternalServerError);
+                return respuesta;
+
+                //return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
             }
         }
     }
