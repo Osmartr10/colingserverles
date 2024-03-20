@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace Coling.API.Bolsatrabajo
+namespace Coling.Autentificacion
 {
     public class Function1
     {
@@ -14,11 +14,11 @@ namespace Coling.API.Bolsatrabajo
             _logger = logger;
         }
 
-        [Function("prueba")]
+        [Function("Function1")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Hola Osmar");
+            return new OkObjectResult("Welcome to Azure Functions!");
         }
     }
 }
