@@ -22,7 +22,7 @@ namespace Coling.API.Curriculum.EndPoints
         }
 
         [Function("InsertarInstitucion")]
-        [OpenApiOperation("Listarspec", "InsertarInstitucion", Description = "Sirve para listar todas las instituciones")]
+        [OpenApiOperation("Listarspec", "ListarInstitucion", Description = "Sirve para listar todas las instituciones")]
         [OpenApiRequestBody("application/json", typeof(Institucion),
            Description = "Institucion modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
@@ -60,7 +60,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiResponseWithBody(statusCode:HttpStatusCode.OK, contentType:"application/json", 
             bodyType: typeof(List<Institucion>),
             Description ="Mostrara una lista de instituciones")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
@@ -82,7 +82,7 @@ namespace Coling.API.Curriculum.EndPoints
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
             bodyType: typeof(List<string>),
             Description = "Mostrara una lista de instituciones")]
-        public async Task<HttpResponseData> ListaNombres([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListaNombres([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
