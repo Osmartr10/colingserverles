@@ -27,7 +27,7 @@ namespace Coling.API.Afiliados.Endpoints
         [Function("ListarPersonas")]
         [OpenApiOperation(operationId: "Run", Summary = "GetTags", Description = "Says welcome to Azure Functions")]
         [OpenApiSecurity("Authorization", SecuritySchemeType.ApiKey, Name = "Basic", In = OpenApiSecurityLocationType.Header)]
-        public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarpersonas")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarpersonas")] HttpRequestData req)
         {            
             _logger.LogInformation("Ejecutando azure function para isnertar personas.");            
             try
