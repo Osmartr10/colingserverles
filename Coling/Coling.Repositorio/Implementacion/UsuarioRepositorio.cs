@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -20,12 +21,12 @@ namespace Coling.Repositorio.Implementacion
         {
             this.configuration = configuration;
         }
-        public async Task<TokenData> ConstruirToken(string usuarioname, string password)
+        public async Task<TokenData> ConstruirToken(string usuarioname, string password,string rol)
         {
             var claims = new List<Claim>()
             {
                 new Claim("usuario", usuarioname),
-                new Claim("rol", "Admin"),
+                new Claim("rol", rol),
                 new Claim("estado", "Activo")
             };
 
@@ -62,11 +63,12 @@ namespace Coling.Repositorio.Implementacion
         {
             TokenData tokenDevolver = new TokenData();
             string passEncriptado = await EncriptarPassword(passwordx);
-            string consulta = "select count(idusuario) from usuario where nombreuser='" + usuariox + "' and password='" + passEncriptado + "'";
-            int Existe = conexion.EjecutarEscalar(consulta);
-            if(Existe > 0)
+            string consulta = "select * from usuario where nombreuser='" + usuariox + "' and password='" + passEncriptado + "'";
+            DataTable Existe = conexion.EjecutarDataTabla(consulta,"tabla");
+            if(Existe.Rows.Count > 0)
             {
-                tokenDevolver = await ConstruirToken(usuariox, passwordx);
+                string rol = Existe.Rows[0]["rol"].ToString();
+                tokenDevolver = await ConstruirToken(usuariox, passwordx,rol);
             }
             return tokenDevolver;
         }

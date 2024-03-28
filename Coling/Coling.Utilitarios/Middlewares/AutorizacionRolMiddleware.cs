@@ -29,12 +29,11 @@ namespace Coling.Utilitarios.Middlewares
         }
         //"Admin,Afiliado"
         private bool EstaAutorizado(string nombreFuncion, string? rolesClaim)
-        {
-            bool sw=false;
-            
+        {       
+            var rolesClaims = funcionesRolesAutorizados.TryGetValue(nombreFuncion, out string? rolesString) &&
+                rolesString.Split(',').Contains(rolesClaim) ? true: false;
 
-            var rolesFuncion = funcionesRolesAutorizados.TryGetValue(nombreFuncion, out string? rolesString);
-            return sw;
+            return rolesClaims;
         }
 
         public void SetFunctionAutorizadas(Dictionary<string, string> metodosAutorizados)

@@ -9,10 +9,11 @@ using Coling.Utilitarios.Middlewares;
 using System.Reflection;
 using Coling.Utilitarios.Attributes;
 using System.Runtime.CompilerServices;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
 
 var ensamblado = Assembly.GetExecutingAssembly();
 var tipoAtributo = typeof(ColingAuthorizeAttribute);
-
+IList<string> DefaultFunctions =new List<string>(); 
 var host = new HostBuilder()    
     .ConfigureServices(services =>
     {
@@ -28,19 +29,56 @@ var host = new HostBuilder()
         x.UseMiddleware<AutorizacionRolMiddleware>();
     })
     .Build();
-var lista = ListarFuncionesAttributes(ensamblado, tipoAtributo);
+var lista = GetAuthorizedFunctions(ensamblado, tipoAtributo);
+host.Services.GetService<AutorizacionRolMiddleware>()?.SetFunctionAutorizadas(lista);
 host.Run();
 
-List<string> ListarFuncionesAttributes(Assembly ensambladox, Type tipox)
-{
-    List<string> lista = new List<string>();
-    Type tipoFuncion = typeof(FunctionAttribute);
-    var metodos = ObtnerMetodosConAtributos(ensambladox, tipox);
 
-    return lista;
+Dictionary<string, string> GetAuthorizedFunctions2(Type containerType, Type? attributeType)
+{
+    var authorizedFunctions = new Dictionary<string, string>();
+
+    if (attributeType == null) { return authorizedFunctions; }
+
+    Type functionType = typeof(FunctionAttribute);
+    var methods = ObtenerMetdosConAtributoPersonalizado(containerType, functionType);
+    foreach (var method in methods)
+    {
+        var function = method.GetCustomAttribute(attributeType, true) as ColingAuthorizeAttribute;
+        if (function is null)
+        {
+            continue;
+        }
+
+        var functionA = (FunctionAttribute?)method.GetCustomAttribute(functionType, true);
+        if (functionA is null)
+        {
+            continue;
+        }
+        authorizedFunctions.Add(functionA.Name, function.Rols);        
+    }
+
+    return authorizedFunctions;
 }
 
-MethodInfo[] ObtnerMetodosConAtributos(Type type, Type tipoAtributo)
+MethodInfo[] ObtenerMetdosConAtributoPersonalizado(Type type, Type attributeType)
 {
-    return type.GetMethods().Where(m=> m.GetCustomAttributes(tipoAtributo, inherit:true).Any()).ToArray();
+    return type.GetMethods()
+        .Where(m => m.GetCustomAttributes(attributeType, inherit: true).Any())
+        .ToArray();
+}
+
+ Dictionary<string, string> GetAuthorizedFunctions(Assembly containerAssembly, Type? attributeType)
+{
+    if (containerAssembly == null) throw new ArgumentNullException(nameof(containerAssembly));
+    if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
+
+    var result = new Dictionary<string, string>();
+    foreach (var item in containerAssembly.ExportedTypes)
+    {
+        var resulItem = GetAuthorizedFunctions2(item, attributeType);
+        result.AddRange(resulItem);
+    }
+
+    return result;
 }
