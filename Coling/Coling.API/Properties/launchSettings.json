@@ -3,7 +3,9 @@
     "Coling.API": {
       "commandName": "Project",
       "commandLineArgs": "--port 7028",
-      "launchBrowser": false
+      "environmentVariables": {
+        "cadenaConexion": "Data Source=(local); Initial Catalog=colingbd; Integrated Security=True; TrustServerCertificate=true;"
+      }
     }
   }
 }

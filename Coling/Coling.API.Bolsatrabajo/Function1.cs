@@ -14,11 +14,11 @@ namespace Coling.API.Bolsatrabajo
             _logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("prueba")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
+            return new OkObjectResult("Hola Osmar");
         }
     }
 }
