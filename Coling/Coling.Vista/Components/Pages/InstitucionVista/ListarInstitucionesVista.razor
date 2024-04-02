@@ -1,34 +1,41 @@
-﻿@page "/personas"
+﻿@page "/instituciones"
 
-@inject IPersonaService servicio
+@inject IInstitucionService servicioInstitucion
 
-<h3>Listar Personas</h3>
+<h3>Listar Instituciones</h3>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="/institucion/crear" class="btn btn-primary m-1"></a>
+    </div>
+</div>
 
 <div>
     <table class="table">
         <thead>
             <tr>
                 <th><strong>Nombre Institucion</strong></th>
-                <th><strong>Apellidos</strong></th>
+                <th><strong>Direccion</strong></th>
             </tr>
         </thead>
-        @foreach (var item in Personas)
+        @foreach (var item in InstitucionesLista)
         {
             <tr>
                 <td>@item.Nombre</td>
-                <td>@item.Apellidos</td>
+                <td>@item.Direccion</td>
             </tr>
         }
     </table>
 </div>
 
 @code {
-    public List<Persona> Personas { get; set; } = new List<Persona>();
+    public List<Institucion> InstitucionesLista { get; set; } = new List<Institucion>();
 
     protected override async Task OnInitializedAsync()
     {
-        var respuesta = await servicio.ListaPersonas();
-        Personas = respuesta;
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoib3NtYXIiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjAyNDQ0M30.dxcIsbhXcJ08DuCOO089EOsar5qsnmMc4GbVgqrFEYE";
+        var respuesta = await servicioInstitucion.ListaInstituciones(token);
+        InstitucionesLista = respuesta;
     }
 
 }
