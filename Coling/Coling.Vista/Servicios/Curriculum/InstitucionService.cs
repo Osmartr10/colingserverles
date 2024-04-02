@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Coling.Shared;
@@ -13,8 +14,13 @@ namespace Coling.Vista.Servicios.Curriculum
     {
         string url = "http://localhost:7227";
         string endPoint = "";
-        HttpClient client = new HttpClient();
+        private readonly HttpClient client;
 
+        public InstitucionService(HttpClient httpClient)
+        {
+            client = httpClient;
+            client.BaseAddress = new Uri(url);
+        }
         public async Task<List<Institucion>> ListaInstituciones(string token)
         {
             endPoint = "api/ListarInstitucion";

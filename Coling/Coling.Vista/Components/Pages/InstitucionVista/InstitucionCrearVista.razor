@@ -13,7 +13,8 @@
 
     private async Task Crear()
     {
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoib3NtYXIiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjAyNDQ0M30.dxcIsbhXcJ08DuCOO089EOsar5qsnmMc4GbVgqrFEYE";
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoib3NtYXIiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjEwMTc4OH0.Jp6ni_qjKlWNlA_tAcjggoCwW14LGYtAFUUSxqtzfWY";
+        institucion.PartitionKey = "Educacion";
         var respuesta = await servicioInstitucion.InsertarInstitucion(institucion, token);
         if(!respuesta)
         {
