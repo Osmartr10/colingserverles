@@ -10,6 +10,7 @@ using System.Reflection;
 using Coling.Utilitarios.Attributes;
 using System.Runtime.CompilerServices;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Extensions;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var ensamblado = Assembly.GetExecutingAssembly();
 var tipoAtributo = typeof(ColingAuthorizeAttribute);
@@ -23,6 +24,10 @@ var host = new HostBuilder()
         services.AddScoped<IInstitucionRepositorio, InstitucionRepositorio>();
         services.AddSingleton<JwtMiddleware>();
         services.AddSingleton<AutorizacionRolMiddleware>();
+        services.Configure<KestrelServerOptions>(options =>
+        {
+            options.AllowSynchronousIO = true;
+        });
     }).ConfigureFunctionsWebApplication(x =>
     {
         x.UseMiddleware<JwtMiddleware>();

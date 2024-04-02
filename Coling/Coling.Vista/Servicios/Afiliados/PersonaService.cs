@@ -10,7 +10,7 @@ namespace Coling.Vista.Servicios.Afiliados
 {
     public class PersonaService : IPersonaService
     {
-        string url = "http://localhost:7227";
+        string url = "http://localhost:7028";
         string endPoint = "";
         HttpClient client = new HttpClient();
         public async Task<List<Persona>> ListaPersonas()

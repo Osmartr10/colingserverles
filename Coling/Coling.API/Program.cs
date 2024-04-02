@@ -2,6 +2,7 @@ using Coling.API.Afiliados;
 using Coling.API.Afiliados.Contratos;
 using Coling.API.Afiliados.Implementacion;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,10 @@ var host = new HostBuilder()
         services.AddDbContext<Contexto>(options => options.UseSqlServer(
                      configuration.GetConnectionString("cadenaConexion")));
         services.AddScoped<IPersonaLogic, PersonaLogic>();
-
+        services.Configure<KestrelServerOptions>(options =>
+        {
+            options.AllowSynchronousIO = true;
+        });
     })
     .Build();
 
