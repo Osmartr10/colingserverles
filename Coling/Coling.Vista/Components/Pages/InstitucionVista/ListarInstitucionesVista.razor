@@ -6,7 +6,7 @@
 
 <div class="form-group row">
     <div class="col-sm-10">
-        <a href="/institucion/crear" class="btn btn-primary m-1"></a>
+        <a href="/institucion/crear" class="btn btn-primary m-1">Agregar Nuevo</a>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoib3NtYXIiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjAyNDQ0M30.dxcIsbhXcJ08DuCOO089EOsar5qsnmMc4GbVgqrFEYE";
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoib3NtYXIiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjEwMTc4OH0.Jp6ni_qjKlWNlA_tAcjggoCwW14LGYtAFUUSxqtzfWY";
         var respuesta = await servicioInstitucion.ListaInstituciones(token);
         InstitucionesLista = respuesta;
     }

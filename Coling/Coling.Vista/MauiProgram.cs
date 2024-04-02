@@ -1,7 +1,9 @@
 ﻿using Coling.Vista.Servicios.Afiliados;
 using Coling.Vista.Servicios.Curriculum;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Http;
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.Extensions.DependencyInjection;
 namespace Coling.Vista
 {
     public static class MauiProgram
@@ -16,6 +18,7 @@ namespace Coling.Vista
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
             builder.Services.AddSweetAlert2();
+            builder.Services.AddHttpClient();
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddScoped<IPersonaService, PersonaService>();
             builder.Services.AddScoped<IInstitucionService, InstitucionService>();
